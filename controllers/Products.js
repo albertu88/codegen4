@@ -4,41 +4,49 @@ var utils = require('../utils/writer.js');
 var Products = require('../service/ProductsService');
 
 module.exports.delete_product = function delete_product (req, res, next, id) {
-  Products.delete_product(id)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  const idProduct = id
+
+  pool.query('DELETE FROM public."Product" WHERE "idProduct" = $1', [idProduct], (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).send(`Product deleted with ID: ${id}`)
+  })
 };
 
 module.exports.get_products = function get_products (req, res, next) {
-  Products.get_products()
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  pool.query('SELECT "idProduct", "nameProduct", price FROM public."Product"', (error, results) => {    
+    if(!results){
+      res.status(200).json('No Rows Found')  
+    }
+    if (error) {
+      throw error
+    }
+    res.status(200).json(results.rows)
+  })
 };
 
 module.exports.new_product = function new_product (req, res, next, body) {
-  Products.new_product(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  const nameProduct = req.body;
+  pool.query('INSERT INTO public."Product"( "nameProduct")	VALUES ($1)', [nameProduct], (error, result) => {
+    if (error) {
+      throw error
+    }
+    res.status(201).send(result.rows[0])
+   })
 };
 
 module.exports.update_product = function update_product (req, res, next, body, id) {
-  Products.update_product(body, id)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  const idProduct= id
+  const nameProduct = req.body
+
+  pool.query('UPDATE public."Product" SET "nameProduct"=$1	WHERE "idProduct"=$2',
+    [ idProduct, nameProduct],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      res.status(200).send(`Product modified with ID: ${id}`)
+    }
+  )
 };

@@ -6,6 +6,7 @@ const config = require('../config').configuration;
 const Pool = require('pg').Pool
 const pool = new Pool(config);
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 module.exports.delete_user = function delete_user (req, res, next, id) {
   const idUser = id
@@ -30,14 +31,40 @@ module.exports.get_users = function get_users (req, res, next) {
   })
 };
 
-module.exports.log_in = function log_in (req, res, next, body) {
-  Users.log_in(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+module.exports.log_in = async function log_in (req, res, next, body) {
+  try{
+ // Get user input
+ const { nameUser, passwordUser } = req.body;
+
+ // Validate user input
+ if (!(nameUser && passwordUser)) {
+  res.status(400).send("All input is required");
+}
+var b=false
+var user
+const result=await pool.query('SELECT * FROM public."User" where "nameUser"=$1', [nameUser])
+if(result){
+ user=result.rows[0]
+  b=  await bcrypt.compare(passwordUser, user.passwordUser)
+  //
+}
+if (b) {
+  // Create token
+  const token = jwt.sign(
+    { user_id: user._id, nameUser },
+    process.env.TOKEN_KEY,
+    {
+      expiresIn: "5h",
+    }
+  );
+  return res.status(200).send(nameUser);
+}else{
+  return res.status(200).send("Invalid Credentials");
+}
+
+  } catch (err) {
+    console.log(err);
+    }
 };
 
 module.exports.new_user = async function new_user (req, res, next, body) {
@@ -47,7 +74,7 @@ module.exports.new_user = async function new_user (req, res, next, body) {
    try {
     // Get user input
     const body =req.body; 
-    
+
     const { nameUser, passwordUser} = req.body;
    // Validate user input
    if (!(nameUser && passwordUser)) {
@@ -55,16 +82,11 @@ module.exports.new_user = async function new_user (req, res, next, body) {
    }
    
      // check if user already exist
-     // Validate if user exist in our database
-     pool.query('SELECT * FROM public."User" where "nameUser"=$1', [nameUser], (error, results) => {    
-       if (error){
-         return res.status(409).send(error);
-   
-       }
-       if(results){
-         return res.status(409).send("User Already Exist. Please Login");
-       }    
-     })
+     const result=await pool.query('SELECT * FROM public."User" where "nameUser"=$1', [nameUser])
+   if(result){
+    return res.status(409).send("User Already Exist. Please Login");
+   }       
+      
    
         //Encrypt user password
         const encryptedUserPassword =  await bcrypt.hash(passwordUser, 10);
