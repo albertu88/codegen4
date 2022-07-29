@@ -1,0 +1,671 @@
+openapi: 3.0.1
+info:
+  title: E-commerce
+  description: A basic API for working with an E-commerce application.
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /users:
+    summary: Get all users.
+    description: This path is used to retrieve order data form the users.json file.
+    get:
+      tags:
+      - Users
+      summary: Gets the user data
+      description: Retrieve the order information from the orders.json file.
+      operationId: get_users
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              examples:
+                users:
+                  value: "{\"users\":[{\"idUser\":\"1\",\"nameUser\":\"Paco\",\"passwordUser\"\
+                    :\"12345\"},{\"idUser\":\"2\",\"nameUser\":\"Alfonso\",\"passwordUser\"\
+                    :\"12345\"} ,{\"idUser\":\"3\",\"nameUser\":\"Francisco\",\"passwordUser\"\
+                    :\"12345\"},{\"idUser\":\"4\",\"nameUser\":\"Ramón\",\"passwordUser\"\
+                    :\"12345\"}]}"
+      x-swagger-router-controller: Users
+  /login:
+    summary: logs in the app
+    description: This path is used to log in the application.
+    post:
+      tags:
+      - Users
+      summary: Add a new user
+      description: This operation adds a new user to the list of orders found in the
+        orders.json file.
+      operationId: log_in
+      requestBody:
+        description: A new user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Users
+  /signup:
+    summary: Add a new user
+    description: This path is used to add new users to the users.json file.
+    post:
+      tags:
+      - Users
+      summary: Add a new user
+      description: This operation adds a new user to the list of orders found in the
+        orders.json file.
+      operationId: new_user
+      requestBody:
+        description: A new user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Users
+  /updateusers/{id}:
+    summary: Update the state of an order.
+    description: This path is used to update the state of an order with a matching
+      id in the orders.json file.
+    put:
+      tags:
+      - Users
+      summary: Update the state of an user
+      description: This operation updates the `state` of an user with a matching id
+        from the orders.json file.
+      operationId: update_user
+      parameters:
+      - name: id
+        in: path
+        description: The id of the user.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: A new user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Users
+  /deleteusers/{id}:
+    summary: Delete an user
+    description: This path is used to delete an user with a matching id from the users.json
+      file.
+    delete:
+      tags:
+      - Users
+      summary: Deletes an user
+      description: This operation deletes an user with a matching id from the users.json
+        file
+      operationId: delete_user
+      parameters:
+      - name: id
+        in: path
+        description: The id of the order.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Users
+  /products:
+    summary: Get all products.
+    description: This path is used to retrieve order data form the products.json file.
+    get:
+      tags:
+      - Products
+      summary: Gets the product data
+      description: Retrieve the product information from the products.json file.
+      operationId: get_products
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              examples:
+                users:
+                  value: "{\"products\":[{\"idProduct\":\"1\",\"nameProduct\":\"A\"\
+                    ,\"price\":\"20\"},{\"idUser\":\"2\",\"nameUser\":\"Alfonso\"\
+                    ,\"passwordUser\":\"12345\"} ,{\"idProduct\":\"1\",\"nameProduct\"\
+                    :\"A\",\"price\":\"20\"},{\"idProduct\":\"1\",\"nameProduct\"\
+                    :\"A\",\"price\":\"20\"}]}"
+      x-swagger-router-controller: Products
+  /newProduct:
+    summary: Add new products
+    description: This path is used to add new products to the products.json file.
+    post:
+      tags:
+      - Products
+      summary: Add a new product
+      description: This operation adds a new product to the list of poducts found
+        in the products.json file.
+      operationId: new_product
+      requestBody:
+        description: A new user product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Products
+  /updateproduct/{id}:
+    summary: Update the state of a product.
+    description: This path is used to update the state of a product with a matching
+      id in the products.json file.
+    put:
+      tags:
+      - Products
+      summary: Update the state of an user
+      description: This operation updates the `state` of a product with a matching
+        id from the products.json file.
+      operationId: update_product
+      parameters:
+      - name: id
+        in: path
+        description: The id of the product.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: A new user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Products
+  /deleteproduct/{id}:
+    summary: Delete a product
+    description: This path is used to delete a product with a matching id from the
+      products.json file.
+    delete:
+      tags:
+      - Products
+      summary: Deletes a product
+      description: This operation deletes a product with a matching id from the products.json
+        file
+      operationId: delete_product
+      parameters:
+      - name: id
+        in: path
+        description: The id of the product.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Products
+  /stock:
+    summary: Get all stocks.
+    description: This path is used to retrieve stock data form the stock.json file.
+    get:
+      tags:
+      - Stocks
+      summary: Gets the user data
+      description: Retrieve the order information from the orders.json file.
+      operationId: get_stock
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              examples:
+                users:
+                  value: "{\"stocks\":[{\"idStock\":\"1\",\"idProduct\":\"1\",\"stockName\"\
+                    :\"AStock\"} ,{\"idStock\":\"2\",\"idProduct\":\"1\",\"stockName\"\
+                    :\"BStock\"} ,{\"idStock\":\"3\",\"idProduct\":\"3\",\"stockName\"\
+                    :\"CStock\"} ,{\"idStock\":\"4\",\"idProduct\":\"1\",\"stockName\"\
+                    :\"DStock\"} ]}"
+      x-swagger-router-controller: Stocks
+  /newstock:
+    summary: Add new stocks
+    description: This path is used to add new stocks to the stocks.json file.
+    post:
+      tags:
+      - Stocks
+      summary: Add a new stock
+      description: This operation adds a new stock to the list of stocks found in
+        the stocks.json file.
+      operationId: new_stock
+      requestBody:
+        description: A new stock object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stock'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Stock'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Stocks
+  /updatestock/{id}:
+    summary: Update the state of a stock.
+    description: This path is used to update the state of a stock with a matching
+      id in the stocks.json file.
+    put:
+      tags:
+      - Stocks
+      summary: Update the state of a stock
+      description: This operation updates the `state` of a  stock with a matching
+        id from the stocks.json file.
+      operationId: update_stock
+      parameters:
+      - name: id
+        in: path
+        description: The id of the stock.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: A new stock object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stock'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Stock'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Stocks
+  /deletestock/{id}:
+    summary: Delete a stock
+    description: This path is used to delete a stock with a matching id from the stocks.json
+      file.
+    delete:
+      tags:
+      - Stocks
+      summary: Deletes a product
+      description: This operation deletes a stock with a matching id from the stocks.json
+        file
+      operationId: delete_stock
+      parameters:
+      - name: id
+        in: path
+        description: The id of the stock.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Stocks
+  /userstock:
+    summary: Get all userstocks.
+    description: This path is used to retrieve order data form the userstocks.json
+      file.
+    get:
+      tags:
+      - Userstock
+      summary: Gets the userstock data
+      description: Retrieve the order information from the userstocks.json file.
+      operationId: get_userstock
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              examples:
+                users:
+                  value: "{\"userstock\":[{\"idChart\":\"1\",\"ChartName\":\"Chart1\"\
+                    ,\"idUser\":\"1\",\"idStock:\"1\"} ,{\"idChart\":\"2\",\"ChartName\"\
+                    :\"Chart2\",\"idUser\":\"2\",\"idStock:\"2\"} ,{\"idChart\":\"\
+                    1\",\"ChartName\":\"Chart2\",\"idUser\":\"1\",\"idStock:\"1\"\
+                    }]}"
+      x-swagger-router-controller: Userstock
+  /newuserstock:
+    summary: Add new userstock
+    description: This path is used to add new userstocks to the userstocks.json file.
+    post:
+      tags:
+      - Userstock
+      summary: Add a new userstock
+      description: This operation adds a new userstock to the list of userstock found
+        in the userstocks.json file.
+      operationId: new_userstock
+      requestBody:
+        description: A new userstock product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Userstock'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Userstock'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Userstock
+  /updateuserstock/{id}:
+    summary: Update the state of a stock.
+    description: This path is used to update the state of a userstock with a matching
+      id in the userstocks.json file.
+    put:
+      tags:
+      - Userstock
+      summary: Update the state of a stock
+      description: This operation updates the `state` of a  userstock with a matching
+        id from the userstocks.json file.
+      operationId: update_userstock
+      parameters:
+      - name: id
+        in: path
+        description: The id of the userstock.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: A new userstock object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Userstock'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Userstock'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Userstock
+  /deleteuserstock/{id}:
+    summary: Delete a userstock
+    description: This path is used to delete a userstock with a matching id from the
+      userstocks.json file.
+    delete:
+      tags:
+      - Stocks
+      summary: Deletes a userstock
+      description: This operation deletes a userstock with a matching id from the
+        userstocks.json file
+      operationId: delete_userstock
+      parameters:
+      - name: id
+        in: path
+        description: The id of the stock.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: Stocks
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        state:
+          type: string
+      xml:
+        name: Order
+    User:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          format: int64
+        nameUser:
+          type: string
+        passwordUser:
+          type: string
+      xml:
+        name: User
+    Product:
+      type: object
+      properties:
+        idProduct:
+          type: integer
+          format: int64
+        nameProduct:
+          type: string
+        price:
+          type: string
+      xml:
+        name: Product
+    Stock:
+      type: object
+      properties:
+        idStock:
+          type: integer
+          format: int64
+        idProduct:
+          type: integer
+          format: int64
+        stockName:
+          type: string
+      xml:
+        name: Stock
+    Userstock:
+      type: object
+      properties:
+        idChart:
+          type: integer
+          format: int64
+        idUser:
+          type: integer
+          format: int64
+        idStock:
+          type: integer
+          format: int64
+        ChartName:
+          type: string
+      xml:
+        name: UserStock
