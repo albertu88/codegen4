@@ -46,7 +46,8 @@ module.exports.new_user = async function new_user (req, res, next, body) {
    // Our register logic starts here
    try {
     // Get user input
-    const body =req.body;
+    const body =req.body; 
+    
     const { nameUser, passwordUser} = req.body;
    // Validate user input
    if (!(nameUser && passwordUser)) {
