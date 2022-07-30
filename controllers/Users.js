@@ -50,13 +50,8 @@ if(result){
 }
 if (b) {
   // Create token
-  const token = jwt.sign(
-    { user_id: user._id, nameUser },
-    process.env.TOKEN_KEY,
-    {
-      expiresIn: "5h",
-    }
-  );
+ 
+  
   return res.status(200).send(nameUser);
 }else{
   return res.status(200).send("Invalid Credentials");
@@ -83,7 +78,7 @@ module.exports.new_user = async function new_user (req, res, next, body) {
    
      // check if user already exist
      const result=await pool.query('SELECT * FROM public."User" where "nameUser"=$1', [nameUser])
-   if(result){
+   if(result.rowCount>0){
     return res.status(409).send("User Already Exist. Please Login");
    }       
       
@@ -95,6 +90,18 @@ module.exports.new_user = async function new_user (req, res, next, body) {
      if (error) {
        throw error
      }
+     //to do...
+ /*     jwt.sign(id , 'secret_key' , (err,token) => {
+      if(err){
+        res.status(400).send({msg : 'Error'})
+     }
+    else {
+        res.send({msg:'success' , token: token})
+     }
+
+
+     }) */
+
      res.status(201).send(result.rows[0])
     })
    
@@ -123,3 +130,16 @@ module.exports.update_user = async function update_user (req, res, next, body, i
     }
   )
 };
+
+
+//to do...
+/* function verifyToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(403);
+  jwt.verify(token, "secret_key", (err, user) => {
+     if (err) return res.sendStatus(404);
+     req.user = user;
+     next();
+  });
+} */
